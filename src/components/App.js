@@ -140,10 +140,88 @@ const states = [{
 
 function App() 
 {
-	// Do not alter/remove main div
+	const [stateIndex, setStateIndex] = useState(0);
+  const [cityIndex, setCityIndex] = useState(0);
+  const [landmarkIndex, setLandmarkIndex] = useState(0);
+
+  const selectedState = states[stateIndex];
+  const selectedCity = selectedState.city[cityIndex];
+  const selectedLandmark = selectedCity.landmarks[landmarkIndex];
+
+  const handleStateChange = (e) => {
+    const newStateIndex = Number(e.target.value);
+
+    setStateIndex(newStateIndex);
+
+    // Automatically select first city and landmark
+    setCityIndex(0);
+    setLandmarkIndex(0);
+  };
+
+  const handleCityChange = (e) => {
+    const newCityIndex = Number(e.target.value);
+
+    setCityIndex(newCityIndex);
+
+    // Automatically select first landmark
+    setLandmarkIndex(0);
+  };
+
+  const handleLandmarkChange = (e) => {
+    setLandmarkIndex(Number(e.target.value));
+  };
+
+
 	return (
 	<div id="main">
-		
+		<select
+        id="state"
+        value={stateIndex}
+        onChange={handleStateChange}
+      >
+        {states.map((state, index) => (
+          <option key={index} value={index}>
+            {state.name}
+          </option>
+        ))}
+      </select>
+
+      <div id="state-name">{selectedState.name}</div>
+      <div id="state-description">{selectedState.description}</div>
+
+      {/* City */}
+      <select
+        id="city"
+        value={cityIndex}
+        onChange={handleCityChange}
+      >
+        {selectedState.city.map((city, index) => (
+          <option key={index} value={index}>
+            {city.name}
+          </option>
+        ))}
+      </select>
+
+      <div id="city-name">{selectedCity.name}</div>
+      <div id="city-description">{selectedCity.description}</div>
+
+      {/* Landmark */}
+      <select
+        id="landmark"
+        value={landmarkIndex}
+        onChange={handleLandmarkChange}
+      >
+        {selectedCity.landmarks.map((landmark, index) => (
+          <option key={index} value={index}>
+            {landmark.name}
+          </option>
+        ))}
+      </select>
+
+      <div id="landmark-name">{selectedLandmark.name}</div>
+      <div id="landmark-description">
+        {selectedLandmark.description}
+      </div>
 	</div>
 	);
 }
